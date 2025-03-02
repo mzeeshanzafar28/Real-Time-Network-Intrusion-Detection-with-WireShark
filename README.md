@@ -1,4 +1,4 @@
-# Real-Time-Network-Intrusio-Detection-with-WireShark
+# Real-Time-Network-Intrusion-Detection-with-WireShark
 
 1. Create virtual environment:
     `python -m venv venv`
