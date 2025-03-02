@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home - Network Intrusion Detection System{% endblock %}
+{% block content %}
+<div class="hero">
+  <h2>Welcome to the Real-Time Network Intrusion Detection System</h2>
+  <p>Protect your network with our advanced intrusion detection system leveraging ensemble machine learning and real-time traffic analysis.</p>
+  <a href="{{ url_for('upload') }}" class="btn">Get Started</a>
+</div>
+
+<section class="features">
+  <h3>Key Features</h3>
+  <div class="feature-item">
+    <h4>Real-Time Analysis</h4>
+    <p>Monitor your network traffic in real-time using data captured by Wireshark. Our system processes and analyzes data instantly to detect anomalies.</p>
+  </div>
+  <div class="feature-item">
+    <h4>Intelligent Detection</h4>
+    <p>Leverage ensemble machine learning models like TabNet, CatBoost, and LightGBM to accurately differentiate between normal and malicious network activities.</p>
+  </div>
+  <div class="feature-item">
+    <h4>User-Friendly Interface</h4>
+    <p>Easily upload CSV files, view interactive charts, and explore detailed analysis results through a sleek and intuitive dashboard.</p>
+  </div>
+</section>
+
+<section class="about">
+  <h3>About the System</h3>
+  <p>
+    In today’s digital landscape, network security is more critical than ever. Our Real-Time Network Intrusion Detection System is designed to meet the challenges of modern cybersecurity. By capturing live network data and analyzing it using advanced machine learning techniques, the system provides a robust defense against potential cyber threats.
+  </p>
+  <p>
+    Whether you're a network administrator or a cybersecurity enthusiast, this tool offers actionable insights and real-time notifications to help maintain the integrity of your network infrastructure.
+  </p>
+</section>
+
+<section class="instructions">
+  <h3>How to Use</h3>
+  <ol>
+    <li><strong>Upload Data:</strong> Navigate to the 'Upload Data' section using the menu above, then select and upload your CSV file captured from Wireshark.</li>
+    <li><strong>Data Processing:</strong> Once uploaded, our backend system processes the data, pre-processes the network features, and applies the ensemble machine learning models.</li>
+    <li><strong>View Results:</strong> After analysis, you'll be presented with comprehensive results including charts, performance metrics, and a detailed breakdown of network traffic.</li>
+    <li><strong>Act on Insights:</strong> Use the information to fine-tune your network's security settings and respond to any identified threats immediately.</li>
+  </ol>
+</section>
+{% endblock %}

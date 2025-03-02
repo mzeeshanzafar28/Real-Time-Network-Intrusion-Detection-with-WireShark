@@ -1,0 +1,249 @@
+/* Gradient Background for Page */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #007BFF, #00A8FF);
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 50px;
+    color: white;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+}
+
+.nav-button {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 10px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+/* Centered Content Styling */
+.content-container {
+    max-width: 1000px;  /* Increased width */
+    margin: 50px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Flash Messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.flashes li {
+    background: #ffeb3b;
+    padding: 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+    width: 60%;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Main Content Area */
+main {
+    padding: 20px;
+}
+
+/* Form Styling */
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input[type="file"] {
+    margin-bottom: 20px;
+}
+
+form button {
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #0056b3;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #007BFF, #00A8FF);
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.hero .btn {
+    background: #fff;
+    color: #007BFF;
+    padding: 10px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.hero .btn:hover {
+    background: #f1f1f1;
+}
+
+/* Features Section */
+.features {
+    margin-bottom: 40px;
+}
+
+.features h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.feature-item {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 10px auto;
+    border-radius: 6px;
+    max-width: 700px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.feature-item h4 {
+    margin-top: 0;
+    color: #007BFF;
+}
+
+.feature-item p {
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+/* About and Instructions Sections */
+.about, .instructions {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.about h3, .instructions h3 {
+    margin-top: 0;
+    color: #007BFF;
+}
+
+.about p, .instructions p, .instructions li {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.instructions ol {
+    padding-left: 20px;
+}
+
+/* Upload Container */
+.upload-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.upload-container h2 {
+    margin-bottom: 20px;
+    color: #007BFF;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.upload-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.upload-btn:hover {
+    background-color: #0056b3;
+}

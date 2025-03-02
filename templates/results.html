@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Analysis Results - Network Intrusion Detection{% endblock %}
+{% block content %}
+<h2>Analysis Results for {{ filename }}</h2>
+<p>Total Packets Analyzed: {{ results.total_packets }}</p>
+<p>Normal Packets: {{ results.normal }}</p>
+<p>Malicious Packets: {{ results.malicious }}</p>
+<p>Detection Accuracy: {{ results.accuracy * 100 }}%</p>
+
+<canvas id="resultsChart" width="400" height="200"></canvas>
+<script>
+    var ctx = document.getElementById('resultsChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Normal', 'Malicious'],
+            datasets: [{
+                data: [{{ results.normal }}, {{ results.malicious }}],
+                backgroundColor: ['#4CAF50', '#F44336']
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Network Traffic Analysis'
+            }
+        }
+    });
+</script>
+{% endblock %}

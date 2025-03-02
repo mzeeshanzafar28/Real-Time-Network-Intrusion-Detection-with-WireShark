@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Upload Data - Network Intrusion Detection{% endblock %}
+{% block content %}
+<div class="upload-container">
+  <h2>Upload Network Traffic Data</h2>
+  <form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="file">Select CSV File:</label>
+      <input type="file" name="file" id="file" accept=".csv" required>
+    </div>
+    <button type="submit" class="upload-btn">Upload</button>
+  </form>
+</div>
+{% endblock %}

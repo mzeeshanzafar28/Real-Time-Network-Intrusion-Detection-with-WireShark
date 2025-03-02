@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Real-Time Network Intrusion Detection{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Include Chart.js for result visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <h1 class="logo">Network Intrusion Detection</h1>
+            <nav>
+                <a href="{{ url_for('index') }}" class="nav-button">Home</a>
+                <a href="{{ url_for('upload') }}" class="nav-button">Upload Data</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        
+        <div class="content-container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Network Intrusion Detection | All Rights Reserved</p>
+    </footer>
+
+</body>
+</html>
