@@ -1,1 +1,4 @@
 Flask
+wheel
+pandas
+scikit-learn

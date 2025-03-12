@@ -6,8 +6,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this to a secure random key
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Define new upload path
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'files')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the directory exists
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'csv'}
 
@@ -16,7 +18,7 @@ def allowed_file(filename):
 
 # Dummy analysis function simulating model processing
 def analyze_file(file_path):
-    time.sleep(3)  # simulate processing delay
+    time.sleep(3)  # Simulate processing delay
     result = {
         "total_packets": random.randint(100, 1000),
         "malicious": random.randint(0, 100),
@@ -40,18 +42,22 @@ def upload():
             flash('No file selected for uploading.')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = file.filename  # For production, use secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            # Save as 'network_data.csv' in /files directory
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'network_data.csv')
             file.save(file_path)
-            flash('File uploaded successfully!')
-            return redirect(url_for('analyze', filename=filename))
+            flash('File uploaded successfully as network_data.csv!')
+            return redirect(url_for('analyze'))
     return render_template('upload.html')
 
-@app.route('/analyze/<filename>')
-def analyze(filename):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/analyze')
+def analyze():
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'network_data.csv')
+    if not os.path.exists(file_path):
+        flash('No uploaded file found for analysis.')
+        return redirect(url_for('upload'))
+    
     results = analyze_file(file_path)
-    return render_template('results.html', results=results, filename=filename)
+    return render_template('results.html', results=results, filename="network_data.csv")
 
 if __name__ == '__main__':
     app.run(debug=True)
