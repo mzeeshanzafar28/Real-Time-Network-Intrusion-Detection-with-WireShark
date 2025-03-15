@@ -11,4 +11,4 @@
     `python app.py`
 5. Temporary Step (Will address later)|  open another terminal and run after uploading the csv from the web app:
     `python backend/clearnData.py`
-6. A new file will be created in the backend folder named `cleanedData.csv`, it's the output for now.
+6. A new file will be created in the backend folder named `normalized_data.csv`, it's the output for now.

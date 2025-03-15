@@ -1,6 +1,6 @@
 "No.","Time","Source","Destination","Protocol","Length","Info"
 "1","0.000000000","192.168.100.3","13.67.9.5","TCP","66","39990  >  443 [ACK] Seq=1 Ack=1 Win=452 Len=0 TSval=1965147972 TSecr=5371181"
-"2","0.050750537","HuaweiTechno_2d:c9:a8","Intel_22:e9:e4","ARP","42","Who has 192.168.100.3? Tell 192.168.100.1"
+"2","0.050750537","","Intel_22:e9:e4","ARP","42","Who has 192.168.100.3? Tell 192.168.100.1"
 "3","0.050772068","Intel_22:e9:e4","HuaweiTechno_2d:c9:a8","ARP","42","192.168.100.3 is at e0:2e:0b:22:e9:e4"
 "4","0.103754720","13.67.9.5","192.168.100.3","TCP","66","[TCP ACKed unseen segment] 443  >  39990 [ACK] Seq=1 Ack=2 Win=16384 Len=0 TSval=5416286 TSecr=1965057363"
 "5","1.808817491","192.168.100.3","57.144.149.32","TLSv1.2","136","Application Data"
