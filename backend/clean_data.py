@@ -1,6 +1,15 @@
 import pandas as pd
 import os
 from sklearn.preprocessing import LabelEncoder, StandardScaler
+import ipaddress
+
+def is_valid_ip(ip_str):
+    """Checks if the IP address is valid."""
+    try:
+        ipaddress.ip_address(ip_str)
+        return True
+    except ValueError:
+        return False
 
 def drop_columns(input_file, output_file, drop_cols):
     """Drops unnecessary columns from the dataset."""
@@ -22,6 +31,15 @@ def clean_and_preprocess(output_file, numeric_cols):
 
     # Drop rows containing any empty (NaN) values
     df.dropna(inplace=True)
+
+    # Remove rows with invalid IP addresses in the 'IP' column (assuming the IP column is named 'IP')
+    df = df[df['Source'].apply(is_valid_ip)]
+    df = df[df['Destination'].apply(is_valid_ip)]
+
+    # Apply label encoding to the 'IP' column
+    label_encoder = LabelEncoder()
+    df['Source'] = label_encoder.fit_transform(df['Source'])
+    df['Destination'] = label_encoder.fit_transform(df['Destination'])
 
     # Encoding categorical variables
     if 'Protocol' in df.columns:

@@ -1,11 +1,12 @@
 import os
 import time
 import random
-from datetime import datetime
+
+# from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change this to a secure random key
+app.secret_key = 'your_secret_key'  
 
 # Define new upload path
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'files')
