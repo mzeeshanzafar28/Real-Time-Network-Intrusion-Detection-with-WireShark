@@ -1,74 +1,35 @@
 import pandas as pd
 import os
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-import ipaddress
 
-def is_valid_ip(ip_str):
-    """Checks if the IP address is valid."""
-    try:
-        ipaddress.ip_address(ip_str)
-        return True
-    except ValueError:
-        return False
+# Define the Wireshark-exportable features (for prediction, we exclude the label column)
+wireshark_features = [
+    'duration', 
+    'protocol_type', 
+    'service', 
+    'flag', 
+    'src_bytes', 
+    'dst_bytes', 
+    'land', 
+    'wrong_fragment', 
+    'urgent'
+]
 
-def drop_columns(input_file, output_file, drop_cols):
-    """Drops unnecessary columns from the dataset."""
+def drop_columns(input_file, output_file, allowed_cols):
+    """Retains only allowed columns from the dataset and drops rows with missing values."""
     df = pd.read_csv(input_file)
-
-    df = df.drop(columns=[col for col in drop_cols if col in df.columns], errors='ignore')
-
-    original_columns = df.columns.tolist()
-    df = df[original_columns]
-
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-
-    df.to_csv(output_file, index=False)
-    print(f"Unnecessary columns dropped, new file: {output_file}")
-
-def clean_and_preprocess(output_file, numeric_cols):
-    """Cleans, encodes categorical variables, normalizes numerical features, drops rows with empty values, and structures data for ML."""
-    df = pd.read_csv(output_file)
-
-    # Drop rows containing any empty (NaN) values
-    df.dropna(inplace=True)
-
-    # Remove rows with invalid IP addresses in the 'IP' column (assuming the IP column is named 'IP')
-    df = df[df['Source'].apply(is_valid_ip)]
-    df = df[df['Destination'].apply(is_valid_ip)]
-
-    # Apply label encoding to the 'IP' column
-    label_encoder = LabelEncoder()
-    df['Source'] = label_encoder.fit_transform(df['Source'])
-    df['Destination'] = label_encoder.fit_transform(df['Destination'])
-
-    # Encoding categorical variables
-    if 'Protocol' in df.columns:
-        encoder = LabelEncoder()
-        df['Protocol'] = encoder.fit_transform(df['Protocol'])
-
-    # Normalize numerical features
-    scaler = StandardScaler()
     
-    for col in numeric_cols:
-        if col in df.columns:
-            df[col] = scaler.fit_transform(df[[col]])
-
-    # Assign the new label (0 = Normal, 1 = Malicious, 0 by Default)
-    df['Malicious'] = df.apply(lambda row: 1 if 'malicious' in str(row).lower() else 0, axis=1)
-
+    # Keep only allowed columns that exist in the dataset
+    df = df[[col for col in allowed_cols if col in df.columns]]
+    
+    # Drop rows with any missing values
+    df.dropna(inplace=True)
+    
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     df.to_csv(output_file, index=False)
-    print(f"Structured and preprocessed data saved to {output_file}")
-
+    print(f"Data cleaned and saved to {output_file}")
 
 if __name__ == "__main__":
     input_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../files/network_data.csv')
     output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../files/normalized_data.csv')
-
-    drop_cols = ['Info']
-    numeric_cols = ['Length', 'Time']
-
-    # Step 1: Drop unnecessary columns (output_file is used for next step)
-    drop_columns(input_file, output_file, drop_cols)
-
-    # Step 2: Clean, preprocess, encode, normalize, and structure data
-    clean_and_preprocess(output_file, numeric_cols)
+    
+    drop_columns(input_file, output_file, wireshark_features)

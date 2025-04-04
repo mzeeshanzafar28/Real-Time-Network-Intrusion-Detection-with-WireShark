@@ -1,4 +1,10 @@
 Flask
 wheel
-pandas
 scikit-learn
+catboost
+joblib
+numpy==1.26.4
+pandas==2.2.2
+kagglehub
+lightgbm
+pytorch-tabnet
