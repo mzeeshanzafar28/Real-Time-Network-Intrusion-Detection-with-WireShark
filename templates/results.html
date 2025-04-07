@@ -16,15 +16,15 @@
             labels: ['Normal', 'Malicious'],
             datasets: [{
                 data: [{{ results.normal }}, {{ results.malicious }}],
-                backgroundColor: ['#4CAF50', '#F44336']
-            }]
+        backgroundColor: ['#4CAF50', '#F44336']
+    }]
         },
-        options: {
-            title: {
-                display: true,
+    options: {
+        title: {
+            display: true,
                 text: 'Network Traffic Analysis'
-            }
         }
+    }
     });
 </script>
 {% endblock %}
