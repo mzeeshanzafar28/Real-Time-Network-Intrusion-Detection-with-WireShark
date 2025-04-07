@@ -10,5 +10,7 @@
 4. Run the flask app:
     `python app.py`
 5. Temporary Step (Will address later)|  open another terminal and run after uploading the csv from the web app:
-    `python backend/clearnData.py`
-6. A new file will be created in the backend folder named `normalized_data.csv`, it's the output for now.
+    `python backend/clean_data.py`
+6. A new file will be created in the backend folder named `normalized_data.csv`, now run: 
+    `python backend/determine.py`
+7. Results are on console for now.
