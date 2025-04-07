@@ -18,7 +18,8 @@ with open(best_model_file, 'rb') as f:
     best_model = pickle.load(f)
 
 # Load the new data for prediction
-input_file = os.path.join(base_dir, '..\\files\\dummy_network_data.csv')  # Use the dummy data file
+# input_file = os.path.join(base_dir, '..\\files\\dummy_network_data.csv')  # Use the dummy data file
+input_file = os.path.join(base_dir, '..\\files\\normalized_data.csv')  # Use the dummy data file
 df = pd.read_csv(input_file)
 
 # Generate missing features (similar to the training code)
