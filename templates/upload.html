@@ -3,12 +3,88 @@
 {% block content %}
 <div class="upload-container">
   <h2>Upload Network Traffic Data</h2>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" id="uploadForm">
     <div class="form-group">
       <label for="file">Select CSV File:</label>
       <input type="file" name="file" id="file" accept=".csv" required>
     </div>
-    <button type="submit" class="upload-btn">Upload</button>
+    <button type="submit" class="upload-btn" id="uploadBtn">Upload</button>
   </form>
+
+  <!-- Overlay with Spinner and Cancel Button -->
+  <div id="processingOverlay" class="overlay" style="display: none;">
+    <div class="overlay-content">
+      <div class="spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Processing...</span>
+        </div>
+      </div>
+      <p>It may take a while depending upon the file size...</p>
+      <button id="cancelBtn" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
 </div>
+<script>
+  document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    const uploadBtn = document.getElementById('uploadBtn');
+    const processingOverlay = document.getElementById('processingOverlay');
+    const fileInput = document.getElementById('file');
+
+    if (fileInput.files.length > 0) {
+      // Disable button and show overlay
+      uploadBtn.disabled = true;
+      processingOverlay.style.display = 'flex';
+
+      // Cancel button functionality (resets form but doesn't stop server processing)
+      document.getElementById('cancelBtn').addEventListener('click', function() {
+        uploadBtn.disabled = false;
+        processingOverlay.style.display = 'none';
+        document.getElementById('uploadForm').reset(); // Clear the form
+      });
+    }
+
+    // Note: True cancellation requires AJAX to interrupt the server, which isn't implemented here.
+    // The overlay will hide on page reload after the server redirect.
+  });
+</script>
+<style>
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .spinner {
+    margin-bottom: 10px;
+  }
+  .cancel-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .cancel-btn:hover {
+    background-color: #c82333;
+  }
+  .upload-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+</style>
 {% endblock %}

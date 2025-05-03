@@ -8,6 +8,10 @@ services = ['http', 'ftp', 'smtp', 'dns', 'ssh']
 flags = ['SF', 'S0', 'S1', 'REJ', 'RSTO']
 labels = ['normal', 'malicious']
 
+# Function to generate a dummy IPv4 address
+def generate_dummy_ip():
+    return f"{random.randint(1, 255)}.{random.randint(0, 255)}.{random.randint(0, 255)}.{random.randint(0, 255)}"
+
 # Function to generate random rows
 def generate_random_row(label):
     return {
@@ -20,6 +24,7 @@ def generate_random_row(label):
         'land': random.choice([0, 1]),  # Random 'land' (0 or 1)
         'wrong_fragment': random.choice([0, 1]),  # Random 'wrong_fragment'
         'urgent': random.choice([0, 1]),  # Random 'urgent'
+        'Source': generate_dummy_ip(),  # Add dummy source IP
         'label': label  # 'normal' or 'malicious'
     }
 
@@ -50,7 +55,7 @@ for i in range(10):  # Print the first 10 rows to verify label distribution
 df = pd.DataFrame(dummy_data)
 
 # Set the path to save the file (going one dir back, then into 'files' dir)
-output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'files')
+output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'test_csvs')
 os.makedirs(output_dir, exist_ok=True)
 
 # Define the output file path

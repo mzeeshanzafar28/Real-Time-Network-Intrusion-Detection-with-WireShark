@@ -2,6 +2,7 @@ import os
 import time
 import random
 import subprocess
+import json
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
@@ -19,41 +20,25 @@ def allowed_file(filename):
 def analyze_file(file_path):
     time.sleep(3)  # Simulate processing delay
 
-    # Running clean_data.py and determine.py and capturing their output
     try:
-        # Change directory to backend before running scripts
         backend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'backend')
-      
-        # Run clean_data.py first (you may need to implement the actual logic there)
         subprocess.run(['python', 'clean_data.py'], cwd=backend_dir, check=True)
+        subprocess.run(['python', 'determine.py'], cwd=backend_dir, check=True)
         
-        # Run determine.py to get results
-        result = subprocess.check_output(['python', 'determine.py'], cwd=backend_dir).decode('utf-8')
-        
-        # Process the output (assuming determine.py prints something useful like prediction)
-        results = process_determine_output(result)
+        results_file = os.path.join(app.config['UPLOAD_FOLDER'], 'analysis_results.json')
+        with open(results_file, 'r') as f:
+            results = json.load(f)
         print("Results from determine.py:", results)  # Debugging output
-
+        return results
+    except subprocess.CalledProcessError as e:
+        if "Required columns missing" in str(e.output):
+            flash("Error: This does not appear to be a valid Wireshark-exported CSV. Missing required columns.")
+        else:
+            flash(f"Error during analysis: {e}")
+        return None
     except Exception as e:
         flash(f"Error during analysis: {e}")
-        return None  # Return None to avoid breaking the application
-    
-    return results
-
-
-def process_determine_output(output):
-    # Here, you can parse the output from determine.py and extract the necessary data.
-    # Assuming determine.py outputs predictions in a known format, like:
-    # Row 1: Predicted label: Malicious, Probability: 0.87
-    # Extracting mock data for simplicity:
-    results = {
-        "total_packets": 100,  # Replace with the actual number of packets from your output
-        "malicious": 40,  # Replace with the actual malicious count
-        "normal": 60,  # Replace with the actual normal count
-        "accuracy": 0.85  # Replace with the actual accuracy
-    }
-    return results
-
+        return None
 
 @app.route('/')
 def index():
@@ -70,10 +55,8 @@ def upload():
             flash('No file selected for uploading.')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            # Save as 'network_data.csv' in /files directory
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'network_data.csv')
             file.save(file_path)
-            # flash('File uploaded successfully as network_data.csv!')
             return redirect(url_for('analyze'))
     return render_template('upload.html')
 
@@ -86,11 +69,9 @@ def analyze():
     
     results = analyze_file(file_path)
     if results is None:
-        flash("Error during analysis. Please try again.")
         return redirect(url_for('upload'))
     
     return render_template('results.html', results=results, filename="network_data.csv")
-
 
 if __name__ == '__main__':
     app.run(debug=True)

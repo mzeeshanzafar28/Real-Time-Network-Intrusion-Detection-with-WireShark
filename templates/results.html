@@ -5,9 +5,32 @@
 <p>Total Packets Analyzed: {{ results.total_packets }}</p>
 <p>Normal Packets: {{ results.normal }}</p>
 <p>Malicious Packets: {{ results.malicious }}</p>
-<p>Detection Accuracy: {{ results.accuracy * 100 }}%</p>
 
 <canvas id="resultsChart" width="400" height="200"></canvas>
+{% if results.malicious_rows %}
+<h3>Malicious Packets Details</h3>
+<table border="1" style="width: 100%;">
+    <tr>
+        <th>Row Index</th>
+        <th>Prediction</th>
+        <th>Probability</th>
+        <th>Source IP</th>
+        <th>Reasons</th>
+    </tr>
+    {% for row in results.malicious_rows %}
+    <tr>
+        <td>{{ row.row_index }}</td>
+        <td>{{ row.prediction }}</td>
+        <td>{{ row.probability | round(2) }}</td>
+        <td>{{ row.source_ip }}</td>
+        <td>{{ row.reasons | join(', ') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No malicious packets detected.</p>
+{% endif %}
+
 <script>
     var ctx = document.getElementById('resultsChart').getContext('2d');
     var chart = new Chart(ctx, {
@@ -16,15 +39,15 @@
             labels: ['Normal', 'Malicious'],
             datasets: [{
                 data: [{{ results.normal }}, {{ results.malicious }}],
-        backgroundColor: ['#4CAF50', '#F44336']
-    }]
+                backgroundColor: ['#4CAF50', '#F44336']
+            }]
         },
-    options: {
-        title: {
-            display: true,
+        options: {
+            title: {
+                display: true,
                 text: 'Network Traffic Analysis'
+            }
         }
-    }
     });
 </script>
 {% endblock %}
