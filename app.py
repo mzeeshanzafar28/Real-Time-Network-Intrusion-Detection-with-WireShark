@@ -3,6 +3,7 @@ import time
 import random
 import subprocess
 import json
+import sys
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 class NetworkApp:
@@ -23,8 +24,8 @@ class NetworkApp:
 
         try:
             backend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'backend')
-            subprocess.run(['python', 'clean_data.py'], cwd=backend_dir, check=True)
-            subprocess.run(['python', 'determine.py'], cwd=backend_dir, check=True)
+            subprocess.run([sys.executable, 'clean_data.py'], cwd=backend_dir, check=True)
+            subprocess.run([sys.executable, 'determine.py'], cwd=backend_dir, check=True)
             
             results_file = os.path.join(self.app.config['UPLOAD_FOLDER'], 'analysis_results.json')
             with open(results_file, 'r') as f:
