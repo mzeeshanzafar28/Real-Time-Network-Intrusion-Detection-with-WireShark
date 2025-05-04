@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Analysis Results - Network Intrusion Detection{% endblock %}
 {% block content %}
-<h2>Analysis Results for {{ filename }}</h2>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+    <h2 style="margin: 0;">Analysis Results for {{ filename }}</h2>
+    <button onclick="exportPDF()" class="export-btn">Export as PDF</button>
+</div>
 <p>Total Packets Analyzed: {{ results.total_packets }}</p>
 <p>Normal Packets: {{ results.normal }}</p>
 <p>Malicious Packets: {{ results.malicious }}</p>
@@ -9,29 +12,37 @@
 <canvas id="resultsChart" width="400" height="200"></canvas>
 {% if results.malicious_rows %}
 <h3>Malicious Packets Details</h3>
-<table border="1" style="width: 100%;">
-    <tr>
-        <th>Row Index</th>
-        <th>Prediction</th>
-        <th>Probability</th>
-        <th>Source IP</th>
-        <th>Reasons</th>
-    </tr>
-    {% for row in results.malicious_rows %}
-    <tr>
-        <td>{{ row.row_index }}</td>
-        <td>{{ row.prediction }}</td>
-        <td>{{ row.probability | round(2) }}</td>
-        <td>{{ row.source_ip }}</td>
-        <td>{{ row.reasons | join(', ') }}</td>
-    </tr>
-    {% endfor %}
+<table border="1" style="width: 100%;" id="maliciousTable">
+    <thead>
+        <tr>
+            <th>Row Index</th>
+            <th>Prediction</th>
+            <th>Probability</th>
+            <th>Source IP</th>
+            <th>Reasons</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in results.malicious_rows %}
+        <tr>
+            <td>{{ row.row_index }}</td>
+            <td>{{ row.prediction }}</td>
+            <td>{{ row.probability | round(2) }}</td>
+            <td>{{ row.source_ip }}</td>
+            <td>{{ row.reasons | join(', ') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No malicious packets detected.</p>
 {% endif %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 <script>
+    // Initialize Chart.js for the pie chart
     var ctx = document.getElementById('resultsChart').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'pie',
@@ -49,5 +60,61 @@
             }
         }
     });
+
+    // Function to export the results as a PDF using jsPDF and autoTable
+    function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Add title
+        doc.setFontSize(18);
+        doc.text('Analysis Results for {{ filename }}', 10, 20);
+
+        // Add summary
+        doc.setFontSize(12);
+        doc.text('Total Packets Analyzed: {{ results.total_packets }}', 10, 30);
+        doc.text('Normal Packets: {{ results.normal }}', 10, 40);
+        doc.text('Malicious Packets: {{ results.malicious }}', 10, 50);
+
+        // Add table if malicious rows exist
+        {% if results.malicious_rows %}
+        doc.text('Malicious Packets Details', 10, 60);
+        const table = document.getElementById('maliciousTable');
+        doc.autoTable({
+            html: '#maliciousTable',
+            startY: 70,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [66, 139, 202] },
+            bodyStyles: { fillColor: [255, 255, 255] },
+            alternateRowStyles: { fillColor: [245, 245, 245] },
+            margin: { top: 10 }
+        });
+        {% else %}
+        doc.text('No malicious packets detected.', 10, 60);
+        {% endif %}
+
+        // Save the PDF
+        doc.save('analysis_results.pdf');
+    }
 </script>
+<style>
+    .export-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .export-btn:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    .export-btn:active {
+        transform: scale(0.95);
+    }
+</style>
 {% endblock %}
